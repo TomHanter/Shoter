@@ -12,14 +12,11 @@ namespace DefaultNamespace
         [SerializeField] private float damage = 1; // урон выстрела
         [SerializeField] private GameObject impactPrefab; // префаб эффекта попадания
         [SerializeField] private Transform shootPoint; // точка откуда идет выстрел
-       
         
-        
-
-
         private void Update() // стандартный юнити метод Update - вызывает каждый кадр
         {
-
+            
+            
             if (Input.GetMouseButtonDown(0)) // если нажимаем левую (0) кнопку мыши
             {
 
