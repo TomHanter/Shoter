@@ -1,5 +1,6 @@
 using Script;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace DefaultNamespace
 {
@@ -12,21 +13,27 @@ namespace DefaultNamespace
         [SerializeField] private float damage = 1; // урон выстрела
         [SerializeField] private GameObject impactPrefab; // префаб эффекта попадания
         [SerializeField] private Transform shootPoint; // точка откуда идет выстрел
-        
+        [SerializeField] private float spreadConfig = 0.1f;
+
         private void Update() // стандартный юнити метод Update - вызывает каждый кадр
         {
             
             
             if (Input.GetMouseButtonDown(0)) // если нажимаем левую (0) кнопку мыши
             {
+                
+                var randomX = Random.Range(-spreadConfig / 2, spreadConfig / 2);
+                var randomY = Random.Range(-spreadConfig / 2, spreadConfig / 2);
+                var spread = new Vector3(randomX,randomY, 0f);
+                Vector3 direction = shootPoint.forward + spread;
 
-                if (Physics.Raycast(shootPoint.position, shootPoint.forward, out var hit)) // выпускаем физич луч (Raycast) trans.pos позиция игрока, forw направление взгляда,
+                if (Physics.Raycast(shootPoint.position,direction, out var hit)) // выпускаем физич луч (Raycast) trans.pos позиция игрока, forw направление взгляда,
                 {
 
                     print(hit.transform.gameObject.name); // выводим название объекта куда попали 
 
                     Instantiate(impactPrefab, hit.point,Quaternion.LookRotation(hit.normal, Vector3.up)); // созд префаб эффекта попадания
-
+                    
                     var destructible = hit.transform.GetComponent<DestruclibleObject>(); // пытаемся получить из объекта куда попали DestruclibObj
                     if (destructible != null)
                     {
